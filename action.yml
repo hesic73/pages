@@ -6,6 +6,9 @@ branding:
   color: 'green'
   icon: 'upload-cloud'
 inputs:
+  module_path:
+    description: 'Path to the module'
+    required: true
   documentation_path:
     description: 'Path to Sphinx source files'
     required: false
