@@ -7,6 +7,7 @@ echo ::group:: Initialize various paths
 
 repo_dir=$GITHUB_WORKSPACE/$INPUT_REPOSITORY_PATH
 doc_dir=$repo_dir/$INPUT_DOCUMENTATION_PATH
+module_dir=$repo_dir/$INPUT_MODULE_PATH
 # https://stackoverflow.com/a/4774063/4799273
 action_dir=$GITHUB_ACTION_PATH
 
@@ -87,6 +88,14 @@ echo ::group:: Creating build directory
 build_dir=/tmp/sphinxnotes-pages
 mkdir -p $build_dir || true
 echo Temp directory \"$build_dir\" is created
+
+echo ::group:: Calling sphinx-apidoc
+
+echo doc_dir=$doc_dir
+echo module_dir=$module_dir
+if ! sphinx-apidoc -fe -o "$doc_dir" "$module_dir"; then
+    exit 1
+fi
 
 echo ::group:: Running Sphinx builder
 if ! sphinx-build -b html $INPUT_SPHINX_BUILD_OPTIONS "$doc_dir" "$build_dir"; then
